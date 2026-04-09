@@ -1,5 +1,5 @@
-<p-table [value]="tasks" [loading]="loading" [paginator]="true" [rows]="rows" [totalRecords]="totalRecords"
-  [lazy]="true" (onLazyLoad)="pageChange.emit($event)" [showCurrentPageReport]="true"
+<p-table [value]="tasks" [paginator]="true" [rows]="rows" [totalRecords]="totalRecords" [lazy]="true"
+  (onLazyLoad)="pageChange.emit($event)" [showCurrentPageReport]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tasks" [rowsPerPageOptions]="[5, 10, 20]"
   styleClass="p-datatable-striped p-datatable-sm" responsiveLayout="scroll" [rowHover]="true">
   <ng-template pTemplate="header">
@@ -9,7 +9,9 @@
       <th pSortableColumn="priority">Priority <p-sortIcon field="priority" /></th>
       <th>AssigneeName</th>
       <th>Due Date</th>
+      <th>Created By</th>
       <th>Actions</th>
+
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
@@ -23,6 +25,7 @@
       </td>
       <td>{{ task.assigneeName || '-' }}</td>
       <td>{{ task.dueDate ? (task.dueDate | date: 'yyyy-MM-dd') : '-' }}</td>
+      <td>{{ task.createdByName || '-' }}</td>
       <td>
         <div class="d-flex gap-2" (click)="$event.stopPropagation()">
           <p-button icon="pi pi-eye" [text]="true" pTooltip="View Details" (onClick)="viewTask.emit(task)" />

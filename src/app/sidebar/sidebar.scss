@@ -1,14 +1,16 @@
 .sidebar {
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      overflow-y: auto;
-    }
-    .nav-link {
-      cursor: pointer;
-    }
-    .nav-link.active {
-      background-color: white !important;
-      color: #198754 !important;
-    }
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+.nav-link.active {
+  background-color: white !important;
+  color: #1ea767 !important;
+}

@@ -6,7 +6,8 @@ import { CurrentUser } from '../models/auth.model';
 
 interface JwtPayload {
   sub: string;         // userId
-  unique_name: string; // userName
+  name: string; // userName
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'?: string;
   'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': string; // role
   teamId: string;
   fullName: string;
@@ -70,7 +71,7 @@ export class AuthStateService {
       return {
         token: token,
         userId: parseInt(decoded.sub),
-        userName: decoded.unique_name,
+        userName: (decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] as any || decoded.name),
         role: (decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || (decoded as any).role) as 'Admin' | 'Member',
         teamId: decoded.teamId ? parseInt(decoded.teamId) : undefined,
         fullName: decoded.fullName

@@ -43,8 +43,8 @@ export class AdminTeamsComponent implements OnInit {
   assignMemberVisible = false;
   selectedTeamId: number | null = null;
   totalRecords = 0;
-  pageSize = 10;
-  
+  pageSize = 5;
+
   viewMembersVisible = false;
   selectedTeam: Team | null = null;
 

@@ -8,7 +8,7 @@ import { ChatMessage } from '../core/models/chat.model';
 
 export interface SidebarTab {
   label: string;
-  icon: string;  // PrimeIcons class e.g. 'pi-list'
+  icon: string;
   route: string;
 }
 
@@ -19,6 +19,7 @@ export interface SidebarTab {
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit {
+
   @Input() sidebarTabs: SidebarTab[] = [];
 
   activeIndex: number = 0;
@@ -79,6 +80,10 @@ export class Sidebar implements OnInit {
 
   get username(): string {
     return this.authState.currentUser()?.userName ?? '';
+  }
+
+  get fullName(): string {
+    return this.authState.currentUser()?.fullName ?? '';
   }
 
   get role(): string {
