@@ -1,0 +1,15 @@
+<p-dialog header="Update Task Status" [(visible)]="visible" [modal]="true" [style]="{ width: '40vw' , height: '28vh' }"
+  (onHide)="close()">
+  <form [formGroup]="form">
+    <div class="mb-3">
+      <label for="taskStatus" class="form-label">New Status</label>
+      <p-select inputId="taskStatus" [showClear]="true" placeholder="Select Status" [options]="statusOptions"
+        formControlName="status" styleClass="w-100" appendTo="body" />
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" severity="danger" type="button" (onClick)="close()" icon="pi pi-lock" />
+    <p-button (onClick)="onSubmit()" label="Update" severity="success" icon="pi pi-check" [disabled]="form.invalid" />
+  </ng-template>
+
+</p-dialog>

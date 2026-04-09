@@ -1,0 +1,43 @@
+<p-toast />
+<p-confirmDialog />
+
+<div class="container-fluid p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0"><i class="pi pi-users me-2"></i>Team Tasks</h2>
+    <p-button label="Create Task" icon="pi pi-plus" (onClick)="createVisible = true" />
+  </div>
+
+  <p-card>
+    <app-task-table
+      [tasks]="tasks"
+      [loading]="loading"
+      [canEdit]="true"
+      [canDelete]="true"
+      [totalRecords]="totalRecords"
+      [rows]="pageSize"
+      (viewTask)="onViewTask($event)"
+      (editStatus)="onEditStatus($event)"
+      (deleteTask)="onDeleteTask($event)"
+      (pageChange)="onPageChange($event)"
+    />
+  </p-card>
+</div>
+
+<app-task-form-dialog
+  [(visible)]="createVisible"
+  [users]="users"
+  (taskCreated)="onTaskCreated($event)"
+/>
+
+<app-task-detail-dialog
+  [(visible)]="detailVisible"
+  [task]="selectedTask"
+/>
+
+<app-task-status-dialog
+  [(visible)]="statusVisible"
+  [task]="selectedTask"
+  (statusUpdated)="onStatusUpdated($event)"
+/>
+
+<app-floating-chat></app-floating-chat>

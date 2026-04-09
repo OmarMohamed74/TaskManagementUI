@@ -1,0 +1,46 @@
+<p-table [value]="tasks" [loading]="loading" [paginator]="true" [rows]="rows" [totalRecords]="totalRecords"
+  [lazy]="true" (onLazyLoad)="pageChange.emit($event)" [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} tasks" [rowsPerPageOptions]="[5, 10, 20]"
+  styleClass="p-datatable-striped p-datatable-sm" responsiveLayout="scroll" [rowHover]="true">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="title">Title <p-sortIcon field="title" /></th>
+      <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
+      <th pSortableColumn="priority">Priority <p-sortIcon field="priority" /></th>
+      <th>AssigneeName</th>
+      <th>Due Date</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-task>
+    <tr (click)="viewTask.emit(task)" style="cursor: pointer;">
+      <td>{{ task.title }}</td>
+      <td>
+        <p-tag [value]="task.status" [severity]="getStatusSeverity(task.status)" />
+      </td>
+      <td>
+        <p-tag [value]="task.priority" [severity]="getPrioritySeverity(task.priority)" />
+      </td>
+      <td>{{ task.assigneeName || '-' }}</td>
+      <td>{{ task.dueDate ? (task.dueDate | date: 'yyyy-MM-dd') : '-' }}</td>
+      <td>
+        <div class="d-flex gap-2" (click)="$event.stopPropagation()">
+          <p-button icon="pi pi-eye" [text]="true" pTooltip="View Details" (onClick)="viewTask.emit(task)" />
+          @if (canEdit) {
+          <p-button icon="pi pi-pencil" [text]="true" severity="info" pTooltip="Update Status"
+            (onClick)="editStatus.emit(task)" />
+          }
+          @if (canDelete) {
+          <p-button icon="pi pi-trash" [text]="true" severity="danger" pTooltip="Delete"
+            (onClick)="deleteTask.emit(task)" />
+          }
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6" class="text-center">No tasks found</td>
+    </tr>
+  </ng-template>
+</p-table>

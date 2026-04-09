@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="col-12 col-sm-8 col-md-5 col-lg-4">
+    <p-card header="Task Management" subheader="Sign in to your account">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="userName" class="form-label">Username</label>
+          <input
+            id="userName"
+            type="text"
+            pInputText
+            class="w-100"
+            formControlName="userName"
+            placeholder="Enter username"
+          />
+          <small
+            class="text-danger"
+            *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+          >
+            Username is required
+          </small>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            placeholder="Enter password"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="w-100"
+            inputStyleClass="w-100"
+          />
+          <small
+            class="text-danger"
+            *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          >
+            Password is required
+          </small>
+        </div>
+
+        <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage" styleClass="w-100 mb-3" />
+
+        <p-button
+          type="submit"
+          label="Login"
+          icon="pi pi-sign-in"
+          [loading]="loading"
+          class="w-100"
+          styleClass="w-100"
+        />
+      </form>
+    </p-card>
+  </div>
+</div>

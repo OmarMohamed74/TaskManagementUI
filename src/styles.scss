@@ -1,1 +1,59 @@
-/* You can add global styles to this file, and also import other style files */
+// Bootstrap
+@use 'bootstrap/scss/bootstrap';
+// PrimeNG
+@use 'primeicons/primeicons.css';
+
+:root {
+  --sidebar-admin-bg: #212529;
+  --sidebar-member-bg: #198754;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+// Sidebar
+.sidebar-admin {
+  background-color: var(--sidebar-admin-bg) !important;
+}
+
+.sidebar-member {
+  background-color: var(--sidebar-member-bg) !important;
+}
+
+// Chat bubble styles
+.chat-bubble-me {
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 18px 18px 0 18px;
+  max-width: 75%;
+  word-break: break-word;
+}
+
+.chat-bubble-other {
+  background-color: #e9ecef;
+  color: #212529;
+  border-radius: 18px 18px 18px 0;
+  max-width: 75%;
+  word-break: break-word;
+}
+
+// Status badge helpers
+.badge-todo {
+  background-color: #6c757d;
+}
+
+.badge-inprogress {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-completed {
+  background-color: #198754;
+}
+
+// PrimeNG overrides for Bootstrap compatibility
+.p-component {
+  font-family: inherit;
+}

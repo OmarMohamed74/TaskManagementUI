@@ -1,0 +1,59 @@
+<p-dialog header="Task Details" [(visible)]="visible" [modal]="true" [style]="{ width: '47vw' }" (onHide)="close()">
+  <ng-container *ngIf="task">
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-6">
+          <strong>Title</strong>
+          <h5>{{ task.title }}</h5>
+        </div>
+        <div class="col-6">
+          <strong>Description</strong>
+          <p class="text-muted">{{ task.description || 'No description provided.' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6">
+
+        <strong>Status</strong><br />
+        <p-tag [value]="task.status" [severity]="getStatusSeverity(task.status)" />
+      </div>
+      <div class="col-6">
+        <strong>Priority</strong><br />
+        <p-tag [value]="task.priority" [severity]="getPrioritySeverity(task.priority)" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <strong>Progress</strong>
+      <p-progressBar [value]="progress" styleClass="mt-2" />
+    </div>
+
+    <div class="row mb-3">
+      <!-- <div class="col-6">
+        <strong>Assigned To:</strong><br/>
+        <span>{{ task.assignedToName || '-' }}</span>
+      </div> -->
+      <!-- <div class="col-6">
+        <strong>Created By:</strong><br />
+        <span>{{ task.createdByName || '-' }}</span>
+      </div> -->
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <strong>Due Date</strong><br />
+        <span>{{ task.dueDate ? (task.dueDate | date: 'yyyy-MM-dd') : '-' }}</span>
+      </div>
+      <div class="col-6">
+        <strong>Created At</strong><br />
+        <span>{{ task.createdAt | date: 'yyyy-MM-dd' }}</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Close" icon="pi pi-lock" severity="danger" (onClick)="close()" />
+  </ng-template>
+</p-dialog>

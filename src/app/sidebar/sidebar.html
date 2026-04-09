@@ -1,0 +1,72 @@
+<div class="d-flex vh-100">
+    <!-- Sidebar panel -->
+    <div
+        class="d-flex flex-column flex-shrink-0 p-3 text-white"
+        [class.bg-dark]="isAdmin"
+        [class.bg-success]="!isAdmin"
+        style="width: 280px;"
+    >
+        <!-- Brand -->
+        <a routerLink="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <i class="pi pi-check-square me-2 fs-4"></i>
+            <span class="fs-5 fw-bold">TaskManager</span>
+        </a>
+        <hr />
+
+        <!-- User info -->
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="pi pi-user fs-5"></i>
+            <div>
+                <div class="fw-semibold small">{{ username }}</div>
+                <span class="badge" [class.bg-light]="isAdmin" [class.text-dark]="isAdmin" [class.bg-dark]="!isAdmin">
+                    {{ role }}
+                </span>
+            </div>
+        </div>
+        <hr />
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-pills flex-column mb-auto">
+            @for (tab of sidebarTabs; let i = $index; track tab.route) {
+            <li class="nav-item">
+                <a
+                    class="nav-link d-flex align-items-center gap-2"
+                    [class.active]="activeIndex === i"
+                    [class.text-white]="activeIndex !== i"
+                    (click)="setActiveTab(i)"
+                    [routerLink]="'/' + tab.route"
+                    [attr.aria-current]="activeIndex === i ? 'page' : null"
+                >
+                    <i [class]="'pi ' + tab.icon"></i>
+                    {{ tab.label }}
+                </a>
+            </li>
+            }
+        </ul>
+
+        <hr />
+
+        <!-- Logout -->
+        <button class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" (click)="logout()">
+            <i class="pi pi-sign-out"></i>
+            Logout
+        </button>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-grow-1 bg-light d-flex flex-column h-100 position-relative border-start">
+        <!-- Optional Top Nav with Notification Bell -->
+        <div class="w-100 bg-white border-bottom p-3 d-flex justify-content-end align-items-center shadow-sm">
+             <div class="position-relative cursor-pointer d-flex align-items-center" style="cursor: pointer;" (click)="openLatestNotification()">
+                 <i class="pi pi-bell fs-4 text-secondary"></i>
+                 <span *ngIf="unreadCount > 0" class="position-absolute translate-middle badge rounded-pill bg-danger border border-light shadow-sm" style="top: 0px; right: -10px; font-size: 0.65em; padding: 0.25em 0.5em;">
+                     {{ unreadCount }}
+                 </span>
+             </div>
+        </div>
+        
+        <div class="flex-grow-1 overflow-auto">
+            <router-outlet />
+        </div>
+    </div>
+</div>

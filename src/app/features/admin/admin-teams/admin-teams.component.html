@@ -1,0 +1,110 @@
+<p-toast />
+
+<div class="container-fluid p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0"><i class="pi pi-users me-2"></i>Teams</h2>
+    <p-button label="Create Team" icon="pi pi-plus" (onClick)="openCreateTeam()" />
+  </div>
+
+  <p-card>
+    <p-table [value]="teams" [loading]="loading" [rowHover]="true" [paginator]="true" [rows]="pageSize"
+      [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="onPageChange($event)" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} teams" [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-striped p-datatable-sm" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+          <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-team>
+        <tr>
+          <td>{{ team.id }}</td>
+          <td>{{ team.name }}</td>
+          <td>
+            <div class="d-flex gap-2 justify-content-center">
+              <p-button icon="pi pi-users" label="View Members" [text]="true" severity="secondary"
+                (onClick)="viewTeamMembers(team)" />
+              <p-button icon="pi pi-user-plus" label="Assign Member" [text]="true"
+                (onClick)="openAssignMember(team.id)" />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="text-center">No teams found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<!-- Create Team Dialog -->
+<p-dialog header="Create Team" [(visible)]="createTeamVisible" [modal]="true" [style]="{ width: '400px' }">
+  <form [formGroup]="createTeamForm" (ngSubmit)="submitCreateTeam()">
+    <div class="mb-3">
+      <label for="teamName" class="form-label">Team Name</label>
+      <input id="teamName" type="text" pInputText class="w-100" formControlName="name" placeholder="Enter team name" />
+      <small class="text-danger" *ngIf="createTeamForm.get('name')?.invalid && createTeamForm.get('name')?.touched">
+        Team name is required
+      </small>
+    </div>
+    <div class="d-flex justify-content-end gap-2">
+      <p-button label="Cancel" severity="secondary" (onClick)="createTeamVisible = false" />
+      <p-button type="submit" label="Create" icon="pi pi-check" [disabled]="createTeamForm.invalid" />
+    </div>
+  </form>
+</p-dialog>
+
+<!-- Assign Member Dialog -->
+<p-dialog header="Assign Member to Team" [(visible)]="assignMemberVisible" [modal]="true"
+  [style]="{ width: '30vw' ,height: '30vh'   }">
+  <form [formGroup]="assignMemberForm">
+    <div class="mb-3">
+      <label for="userId" class="form-label">Select User</label>
+      <p-select inputId="userId" appendTo="body" [options]="userOptions" formControlName="userId"
+        placeholder="Select a user" styleClass="w-100" />
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <div class="d-flex justify-content-end gap-2">
+      <p-button label="Cancel" severity="secondary" (onClick)="assignMemberVisible = false" />
+      <p-button (onClick)="submitAssignMember()" label="Assign" icon="pi pi-check"
+        [disabled]="assignMemberForm.invalid" />
+    </div>
+  </ng-template>
+
+</p-dialog>
+
+<!-- View Members Dialog -->
+<p-dialog [header]="selectedTeam?.name + ' Members'" [(visible)]="viewMembersVisible" [modal]="true"
+  [style]="{ width: '500px' }">
+  <div *ngIf="selectedTeam">
+    <p-table [value]="selectedTeam.members || []" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Username</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-member>
+        <tr>
+          <td>{{ member.id }}</td>
+          <td>{{ member.fullName }}</td>
+          <td>{{ member.userName }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="text-center">No members assigned to this team</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+    <p-button label="Close" (onClick)="viewMembersVisible = false" />
+  </div>
+</p-dialog>

@@ -1,0 +1,19 @@
+<!-- Floating Button -->
+<button class="btn btn-success rounded-circle shadow position-fixed d-flex align-items-center justify-content-center"
+        style="bottom: 2rem; right: 2rem; width: 56px; height: 56px; z-index: 1050; border: none;"
+        (click)="toggleChat()">
+  <i class="pi pi-comments fs-4 text-white"></i>
+  <span *ngIf="unreadCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light">
+    {{ unreadCount }}
+  </span>
+</button>
+
+<!-- Chat Dialog Pop-up -->
+<p-dialog [(visible)]="visible" [modal]="true" [maximizable]="true" 
+          [style]="{width: '80vw', height: '85vh'}" 
+          header="Chat" 
+          styleClass="p-0 overflow-hidden" 
+          contentStyleClass="p-0 h-100 overflow-hidden"
+          (onShow)="onDialogShow()">
+  <app-member-chat *ngIf="visible" #memberChat class="d-block h-100 w-100"></app-member-chat>
+</p-dialog>

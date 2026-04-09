@@ -1,0 +1,89 @@
+<p-toast />
+
+<div class="container-fluid p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0"><i class="pi pi-user-plus me-2"></i>Users</h2>
+    <p-button label="Create User" icon="pi pi-plus" (onClick)="openCreate()" />
+  </div>
+
+  <p-card>
+    <p-table [value]="users" [loading]="loading" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords"
+      [lazy]="true" (onLazyLoad)="onPageChange($event)" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users" [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-striped p-datatable-sm" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+          <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
+          <th pSortableColumn="role">Role <p-sortIcon field="role" /></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.userName }}</td>
+          <td>
+            <span class="badge" [class.bg-danger]="user.role === 'Admin'" [class.bg-success]="user.role !== 'Admin'">
+              {{ user.role }}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="text-center">No users found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<!-- Create User Dialog -->
+<p-dialog header="Create User" [(visible)]="createVisible" [modal]="true" [style]="{ width: '420px' }">
+  <form [formGroup]="createForm">
+    <div class="mb-3">
+      <label for="newFullName" class="form-label">Full Name</label>
+      <input id="newFullName" type="text" pInputText class="w-100" formControlName="fullName"
+        placeholder="Enter full name" />
+      @if(createForm.get('fullName')?.invalid && createForm.get('fullName')?.touched) {
+      <small class="text-danger">
+        Full name is required
+      </small>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="newUsername" class="form-label">Username</label>
+      <input id="newUsername" type="text" pInputText class="w-100" formControlName="userName"
+        placeholder="Enter username" />
+      @if(createForm.get('userName')?.invalid && createForm.get('userName')?.touched) {
+      <small class="text-danger">
+        Username is required
+      </small>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="newPassword" class="form-label">Password</label>
+      <p-password inputId="newPassword" formControlName="password" placeholder="Enter password" [toggleMask]="true"
+        styleClass="w-100" inputStyleClass="w-100" />
+      @if(createForm.get('password')?.invalid && createForm.get('password')?.touched) {
+      <small class="text-danger">
+        Password must be at least 6 characters
+      </small>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="newRole" class="form-label">Role</label>
+      <p-select inputId="newRole" [options]="roleOptions" appendTo="body" formControlName="role" styleClass="w-100" />
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="d-flex justify-content-end gap-2">
+      <p-button label="Cancel" severity="secondary" (onClick)="createVisible = false" />
+      <p-button (onClick)="submitCreate()" label="Create" icon="pi pi-check" [disabled]="createForm.invalid" />
+    </div>
+  </ng-template>
+</p-dialog>
