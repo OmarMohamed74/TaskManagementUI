@@ -10,7 +10,7 @@ import { ApiResponse } from './task.service';
 export class TeamService {
   private readonly baseUrl = `${environment.apiUrl}/api/teams`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   createTeam(dto: CreateTeamDto): Observable<ApiResponse<Team>> {
     return this.http.post<ApiResponse<Team>>(this.baseUrl, dto);
@@ -24,7 +24,7 @@ export class TeamService {
     return this.http.get<ApiResponse<Team>>(`${this.baseUrl}/${id}`);
   }
 
-  assignMember(teamId: number, dto: AssignMemberDto): Observable<ApiResponse<void>> {
-    return this.http.post<ApiResponse<void>>(`${this.baseUrl}/${teamId}/assign`, dto);
+  assignMember(dto: AssignMemberDto): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.baseUrl}/${dto.teamId}/assign`, dto);
   }
 }

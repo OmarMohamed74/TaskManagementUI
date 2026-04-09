@@ -10,7 +10,8 @@
   <p-card>
     <app-task-table [tasks]="tasks"  [canEdit]="true" [canDelete]="true"
       [totalRecords]="totalRecords" [rows]="pageSize" (viewTask)="onViewTask($event)"
-      (editStatus)="onEditStatus($event)" (deleteTask)="onDeleteTask($event)" (pageChange)="onPageChange($event)" />
+      (editStatus)="onEditStatus($event)" (deleteTask)="onDeleteTask($event)" (pageChange)="onPageChange($event)"
+      (search)="onSearch($event)" />
   </p-card>
 </div>
 

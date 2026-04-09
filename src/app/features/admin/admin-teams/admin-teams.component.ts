@@ -128,7 +128,7 @@ export class AdminTeamsComponent implements OnInit {
 
   submitAssignMember(): void {
     if (this.assignMemberForm.invalid || !this.selectedTeamId) return;
-    this.teamService.assignMember(this.selectedTeamId, this.assignMemberForm.value).subscribe({
+    this.teamService.assignMember({ teamId: this.selectedTeamId, userId: this.assignMemberForm.value.userId }).subscribe({
       next: (res) => {
         if (res.isSuccess) {
           this.swal.success('Member assigned successfully', 'Team Management');

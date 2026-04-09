@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TaskItem, CreateTaskDto, UpdateTaskStatusDto, PagedResult } from '../models/task.model';
+import { TaskItem, CreateTaskDto, UpdateTaskStatusDto, PagedResult, TaskQuery } from '../models/task.model';
 import { environment } from '../../../environments/environment';
 
 export interface ApiResponse<T> {
@@ -20,17 +20,34 @@ export class TaskService {
     return this.http.post<ApiResponse<TaskItem>>(this.baseUrl, dto);
   }
 
-  getMyTasks(pageNumber: number = 1, pageSize: number = 10): Observable<ApiResponse<PagedResult<TaskItem>>> {
-    const params = new HttpParams()
-      .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString());
+  getMyTasks(query: TaskQuery): Observable<ApiResponse<PagedResult<TaskItem>>> {
+    let params = new HttpParams()
+      .set('pageNumber', query.pageNumber.toString())
+      .set('pageSize', query.pageSize.toString());
+    if (query.searchTerm) {
+      params = params.set('searchTerm', query.searchTerm);
+    }
     return this.http.get<ApiResponse<PagedResult<TaskItem>>>(`${this.baseUrl}/my`, { params });
   }
 
-  getTeamTasks(teamId: number, pageNumber: number = 1, pageSize: number = 10): Observable<ApiResponse<PagedResult<TaskItem>>> {
-    const params = new HttpParams()
-      .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString());
+  getAllTasks(query: TaskQuery): Observable<ApiResponse<PagedResult<TaskItem>>> {
+    let params = new HttpParams()
+      .set('pageNumber', query.pageNumber.toString())
+      .set('pageSize', query.pageSize.toString());
+
+    if (query.searchTerm) {
+      params = params.set('searchTerm', query.searchTerm);
+    }
+    return this.http.get<ApiResponse<PagedResult<TaskItem>>>(`${this.baseUrl}/all`, { params });
+  }
+
+  getTeamTasks(teamId: number, query: TaskQuery): Observable<ApiResponse<PagedResult<TaskItem>>> {
+    let params = new HttpParams()
+      .set('pageNumber', query.pageNumber.toString())
+      .set('pageSize', query.pageSize.toString());
+    if (query.searchTerm) {
+      params = params.set('searchTerm', query.searchTerm);
+    }
     return this.http.get<ApiResponse<PagedResult<TaskItem>>>(`${this.baseUrl}/team/${teamId}`, { params });
   }
 

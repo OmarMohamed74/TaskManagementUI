@@ -3,12 +3,17 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { TooltipModule } from 'primeng/tooltip';
+import { FormsModule } from '@angular/forms';
 import { TaskItem } from '../../core/models/task.model';
 
 @Component({
   selector: 'app-task-table',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, TagModule],
+  imports: [CommonModule, TableModule, ButtonModule, TagModule, InputTextModule, FormsModule, InputGroupModule, InputGroupAddonModule, TooltipModule],
   templateUrl: './task-table.component.html'
 })
 export class TaskTableComponent {
@@ -23,6 +28,13 @@ export class TaskTableComponent {
   @Output() editStatus = new EventEmitter<TaskItem>();
   @Output() deleteTask = new EventEmitter<TaskItem>();
   @Output() pageChange = new EventEmitter<any>();
+  @Output() search = new EventEmitter<string>();
+
+  searchTerm: string = '';
+
+  onSearch() {
+    this.search.emit(this.searchTerm);
+  }
 
   getStatusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
     switch (status) {

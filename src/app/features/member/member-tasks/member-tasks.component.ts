@@ -42,6 +42,7 @@ export class MemberTasksComponent implements OnInit {
   totalRecords = 0;
   pageSize = 10;
   currentPage = 1;
+  searchTerm = '';
 
   createVisible = false;
   detailVisible = false;
@@ -62,7 +63,7 @@ export class MemberTasksComponent implements OnInit {
 
   loadMyTasks(pageNumber: number = 1, pageSize: number = 10): void {
     this.loading = true;
-    this.taskService.getMyTasks(pageNumber, pageSize).subscribe({
+    this.taskService.getMyTasks({ pageNumber, pageSize, searchTerm: this.searchTerm }).subscribe({
       next: (res) => {
         const pagedData = res.data as any;
         this.tasks = pagedData.items;
@@ -71,6 +72,12 @@ export class MemberTasksComponent implements OnInit {
       },
       error: () => { this.loading = false; }
     });
+  }
+
+  onSearch(term: string): void {
+    this.searchTerm = term;
+    this.currentPage = 1;
+    this.loadMyTasks(this.currentPage, this.pageSize);
   }
 
   onPageChange(event: any): void {

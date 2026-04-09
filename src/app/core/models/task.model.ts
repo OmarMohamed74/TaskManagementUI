@@ -32,6 +32,12 @@ export interface UpdateTaskStatusDto {
 export interface PagedResult<T> {
   items: T[];
   totalCount: number;
-  page: number;
+  pageNumber: number;
   pageSize: number;
+}
+
+export interface TaskQuery {
+  pageNumber: number;
+  pageSize: number;
+  searchTerm?: string;
 }

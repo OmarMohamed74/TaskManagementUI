@@ -15,5 +15,6 @@ export interface CreateTeamDto {
 }
 
 export interface AssignMemberDto {
+  teamId: number;
   userId: number;
 }

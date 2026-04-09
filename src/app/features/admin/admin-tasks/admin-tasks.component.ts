@@ -4,6 +4,8 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TaskService } from '../../../core/services/task.service';
 import { UserService } from '../../../core/services/user.service';
@@ -28,7 +30,9 @@ import { TaskStatusDialogComponent } from '../../../shared/task-status-dialog/ta
     TaskTableComponent,
     TaskFormDialogComponent,
     TaskDetailDialogComponent,
-    TaskStatusDialogComponent
+    TaskStatusDialogComponent,
+    InputTextModule,
+    FormsModule
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './admin-tasks.component.html'
@@ -44,6 +48,7 @@ export class AdminTasksComponent implements OnInit {
   totalRecords = 0;
   pageSize = 5;
   currentPage = 1;
+  searchTerm = '';
 
   constructor(
     private taskService: TaskService,
@@ -56,12 +61,12 @@ export class AdminTasksComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
-    this.loadMyTasks();
+    this.loadTasks();
   }
 
-  loadMyTasks(pageNumber: number = 1, pageSize: number = 10): void {
+  loadTasks(pageNumber: number = 1, pageSize: number = 10): void {
     this.loading = true;
-    this.taskService.getMyTasks(pageNumber, pageSize).subscribe({
+    this.taskService.getAllTasks({ pageNumber, pageSize, searchTerm: this.searchTerm }).subscribe({
       next: (res) => {
         const paged = res.data as any;
         this.tasks = paged.items;
@@ -72,10 +77,16 @@ export class AdminTasksComponent implements OnInit {
     });
   }
 
+  onSearch(term: string): void {
+    this.searchTerm = term;
+    this.currentPage = 1;
+    this.loadTasks(this.currentPage, this.pageSize);
+  }
+
   onPageChange(event: any): void {
     this.currentPage = (event.first / event.rows) + 1;
     this.pageSize = event.rows;
-    this.loadMyTasks(this.currentPage, this.pageSize);
+    this.loadTasks(this.currentPage, this.pageSize);
   }
 
   loadUsers(): void {
@@ -89,7 +100,7 @@ export class AdminTasksComponent implements OnInit {
       next: (res) => {
         if (res.isSuccess) {
           this.swal.success('Task created successfully', 'Task Management');
-          this.loadMyTasks();
+          this.loadTasks();
         } else {
           this.swal.error(res.message || 'Failed to create task', 'Task Management');
         }
@@ -116,7 +127,7 @@ export class AdminTasksComponent implements OnInit {
       next: (res) => {
         if (res.isSuccess) {
           this.messageService.add({ severity: 'success', summary: 'Status updated' });
-          this.loadMyTasks();
+          this.loadTasks();
         }
       }
     });
@@ -130,7 +141,7 @@ export class AdminTasksComponent implements OnInit {
           next: (res) => {
             if (res.isSuccess) {
               this.messageService.add({ severity: 'success', summary: 'Task deleted' });
-              this.loadMyTasks();
+              this.loadTasks();
             }
           }
         });

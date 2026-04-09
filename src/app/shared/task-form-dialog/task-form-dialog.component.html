@@ -1,4 +1,4 @@
-<p-dialog header="Create Task" [(visible)]="visible" [modal]="true" [style]="{ width: '480px' }" (onHide)="close()">
+<p-dialog header="Create Task" [(visible)]="visible" [modal]="true" [style]="{ width: '40vw' }" (onHide)="close()">
   <form [formGroup]="form">
     <div class="mb-3">
       <label for="taskTitle" class="form-label">Title <span class="text-danger">*</span></label>
@@ -25,10 +25,12 @@
         placeholder="Select user" [showClear]="true" styleClass="w-100" />
     </div>
 
-    <div class="mb-3">
-      <label for="taskDue" class="form-label">Due Date</label>
-      <p-datepicker inputId="taskDue" formControlName="dueDate" appendTo="body" dateFormat="yy-mm-dd" [showIcon]="true"
-        styleClass="w-100" [minDate]="minDate" />
+    <div class="row">
+      <div class="mb-3">
+        <label for="taskDue" class="form-label">Due Date</label>
+        <p-datepicker inputId="taskDue" formControlName="dueDate" [style]="{'width':'100%'}" appendTo="body"
+          dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-100" inputStyleClass="w-100" [minDate]="minDate" />
+      </div>
     </div>
 
   </form>

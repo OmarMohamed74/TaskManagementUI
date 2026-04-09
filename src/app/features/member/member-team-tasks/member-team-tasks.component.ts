@@ -42,6 +42,7 @@ export class MemberTeamTasksComponent implements OnInit {
   totalRecords = 0;
   pageSize = 10;
   currentPage = 1;
+  searchTerm = '';
 
   createVisible = false;
   detailVisible = false;
@@ -67,7 +68,7 @@ export class MemberTeamTasksComponent implements OnInit {
 
   loadTeamTasks(teamId: number, pageNumber: number = 1, pageSize: number = 10): void {
     this.loading = true;
-    this.taskService.getTeamTasks(teamId, pageNumber, pageSize).subscribe({
+    this.taskService.getTeamTasks(teamId, { pageNumber, pageSize, searchTerm: this.searchTerm }).subscribe({
       next: (res) => {
         const pagedData = res.data as any;
         this.tasks = pagedData.items;
@@ -76,6 +77,15 @@ export class MemberTeamTasksComponent implements OnInit {
       },
       error: () => { this.loading = false; }
     });
+  }
+
+  onSearch(term: string): void {
+    this.searchTerm = term;
+    this.currentPage = 1;
+    const teamId = this.authState.currentUser()?.teamId;
+    if (teamId) {
+      this.loadTeamTasks(teamId, this.currentPage, this.pageSize);
+    }
   }
 
   onPageChange(event: any): void {

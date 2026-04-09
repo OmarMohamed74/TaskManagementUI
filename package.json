@@ -36,7 +36,7 @@
     "jwt-decode": "^4.0.0",
     "ngx-cookie-service": "^21.3.1",
     "primeicons": "^7.0.0",
-    "primeng": "^21.1.5",
+    "primeng": "^20.4.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.26.24",
     "tslib": "^2.3.0",
