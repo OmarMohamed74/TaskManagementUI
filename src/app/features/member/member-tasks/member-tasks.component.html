@@ -8,7 +8,7 @@
   </div>
 
   <p-card>
-    <app-task-table [tasks]="tasks" [loading]="loading" [canEdit]="true" [canDelete]="true"
+    <app-task-table [tasks]="tasks"  [canEdit]="true" [canDelete]="true"
       [totalRecords]="totalRecords" [rows]="pageSize" (viewTask)="onViewTask($event)"
       (editStatus)="onEditStatus($event)" (deleteTask)="onDeleteTask($event)" (pageChange)="onPageChange($event)" />
   </p-card>

@@ -36,9 +36,9 @@ export class TaskFormDialogComponent implements OnInit {
   form: FormGroup;
 
   priorityOptions = [
-    { label: 'Low', value: 0 },
-    { label: 'Medium', value: 1 },
-    { label: 'High', value: 2 }
+    { label: 'Low', value: "Low" },
+    { label: 'Medium', value: "Medium" },
+    { label: 'High', value: "High" }
   ];
 
   minDate: Date = new Date();
@@ -47,7 +47,7 @@ export class TaskFormDialogComponent implements OnInit {
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: [''],
-      priority: [1, Validators.required],
+      priority: ["Medium", Validators.required],
       assigneeId: [null, Validators.required],
       dueDate: [null, Validators.required]
     });

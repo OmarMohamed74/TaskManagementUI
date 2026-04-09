@@ -42,7 +42,7 @@ export class AdminTasksComponent implements OnInit {
   statusVisible = false;
   selectedTask: TaskItem | null = null;
   totalRecords = 0;
-  pageSize = 10;
+  pageSize = 5;
   currentPage = 1;
 
   constructor(

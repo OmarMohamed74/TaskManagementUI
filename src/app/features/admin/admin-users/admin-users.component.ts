@@ -36,7 +36,7 @@ export class AdminUsersComponent implements OnInit {
   users: User[] = [];
   loading = false;
   totalRecords = 0;
-  pageSize = 10;
+  pageSize = 5;
   createVisible = false;
 
   createForm: FormGroup;
