@@ -52,6 +52,7 @@ export class MemberTasksComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private userService: UserService,
+    private authState: AuthStateService,
     private confirmationService: ConfirmationService,
     private swal: Sweetalert
   ) { }
@@ -87,7 +88,9 @@ export class MemberTasksComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.userService.getNonPaginatedUsers().subscribe({
+    const teamId = this.authState.currentUser()?.teamId;
+    if (!teamId) return;
+    this.userService.getTeamMembers(teamId).subscribe({
       next: (res) => { this.users = res.data; }
     });
   }
@@ -137,7 +140,7 @@ export class MemberTasksComponent implements OnInit {
 
   onDeleteTask(task: TaskItem): void {
     this.confirmationService.confirm({
-      message: `Delete task "${task.title}"?`,
+      message: `Are you sure you want to delete this task "${task.title}"?`,
       accept: () => {
         this.taskService.deleteTask(task.id).subscribe({
           next: (res) => {

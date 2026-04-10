@@ -1,16 +1,58 @@
-.sidebar {
+.sidebar-container {
   height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
+  transition: all 0.3s ease;
+
+  &.theme-admin {
+    background-color: #212529 !important;
+
+    .nav-link.active {
+      background-color: white !important;
+      color: #212529 !important;
+    }
+  }
+
+  &.theme-member {
+    background-color: #198754 !important;
+
+    .nav-link.active {
+      background-color: white !important;
+      color: #198754 !important;
+    }
+  }
+
+  &.theme-blue {
+    background-color: #0d6efd !important;
+
+    .nav-link.active {
+      background-color: white !important;
+      color: #0d6efd !important;
+    }
+  }
+
+  &.theme-purple {
+    background-color: #6f42c1 !important;
+
+    .nav-link.active {
+      background-color: white !important;
+      color: #6f42c1 !important;
+    }
+  }
+
+  &.theme-danger {
+    background-color: #dc3545 !important;
+
+    .nav-link.active {
+      background-color: white !important;
+      color: #dc3545 !important;
+    }
+  }
 }
 
 .nav-link {
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.nav-link.active {
-  background-color: white !important;
-  color: #1ea767 !important;
+.cursor-pointer {
+  cursor: pointer;
 }

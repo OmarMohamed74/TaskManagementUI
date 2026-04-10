@@ -1,6 +1,6 @@
 <div class="d-flex vh-100">
     <!-- Sidebar panel -->
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white" [class.bg-dark]="isAdmin" [class.bg-success]="!isAdmin"
+    <div class="sidebar-container d-flex flex-column flex-shrink-0 p-3 text-white" [ngClass]="currentTheme"
         style="width: 280px;">
         <!-- Brand -->
         <a routerLink="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">

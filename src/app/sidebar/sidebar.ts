@@ -25,6 +25,7 @@ export class Sidebar implements OnInit {
   activeIndex: number = 0;
   unreadCount: number = 0;
   latestUnreadSenderId: number | null = null;
+  currentTheme: string = '';
 
   constructor(
     private router: Router,
@@ -33,6 +34,7 @@ export class Sidebar implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentTheme = this.isAdmin ? 'theme-admin' : 'theme-member';
     this.chatService.startConnection();
 
     this.chatService.unreadCount$.subscribe(count => {
@@ -72,6 +74,10 @@ export class Sidebar implements OnInit {
   setActiveTab(index: number): void {
     this.activeIndex = index;
     this.router.navigate(['/' + this.sidebarTabs[index].route]);
+  }
+
+  changeTheme(theme: string): void {
+    this.currentTheme = theme;
   }
 
   get isAdmin(): boolean {

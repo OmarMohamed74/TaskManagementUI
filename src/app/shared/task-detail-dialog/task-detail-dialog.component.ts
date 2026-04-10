@@ -5,11 +5,12 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TaskItem } from '../../core/models/task.model';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-task-detail-dialog',
   standalone: true,
-  imports: [CommonModule, DialogModule, ButtonModule, TagModule, ProgressBarModule],
+  imports: [CommonModule, DialogModule, ButtonModule, TagModule, ProgressBarModule, DividerModule],
   templateUrl: './task-detail-dialog.component.html'
 })
 export class TaskDetailDialogComponent {
@@ -21,26 +22,26 @@ export class TaskDetailDialogComponent {
   get progress(): number {
     if (!this.task) return 0;
     switch (this.task.status) {
-      case 'Completed':  return 100;
+      case 'Completed': return 100;
       case 'InProgress': return 50;
-      default:           return 0;
+      default: return 0;
     }
   }
 
   getStatusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
     switch (status) {
-      case 'Completed':  return 'success';
+      case 'Completed': return 'success';
       case 'InProgress': return 'info';
-      default:           return 'warn';
+      default: return 'warn';
     }
   }
 
   getPrioritySeverity(priority: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
     switch (priority) {
-      case 'High':   return 'danger';
+      case 'High': return 'danger';
       case 'Medium': return 'warn';
-      case 'Low':    return 'success';
-      default:       return 'secondary';
+      case 'Low': return 'success';
+      default: return 'secondary';
     }
   }
 
