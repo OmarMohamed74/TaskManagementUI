@@ -6,11 +6,17 @@ import { LoaderService } from '../services/Loader/loader.service';
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
   const loaderService = inject(LoaderService);
 
-  loaderService.show();
+  const shouldSkipLoader = req.url.includes('/api/chat') || req.url.includes('/hubs/chat');
+
+  if (!shouldSkipLoader) {
+    loaderService.show();
+  }
 
   return next(req).pipe(
     finalize(() => {
-      loaderService.hide();
+      if (!shouldSkipLoader) {
+        loaderService.hide();
+      }
     })
   );
 };

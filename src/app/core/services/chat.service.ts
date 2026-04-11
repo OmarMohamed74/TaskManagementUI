@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 import { ChatMessage, SendMessageDto } from '../models/chat.model';
 import { environment } from '../../../environments/environment';
@@ -12,7 +12,7 @@ import { AuthStateService } from './auth-state.service';
 export class ChatService {
 
   private readonly baseUrl = `${environment.apiUrl}/api/chat`;
-  
+
   private hubConnection: signalR.HubConnection | null = null;
 
   public messageReceived$ = new Subject<ChatMessage>();
@@ -23,7 +23,10 @@ export class ChatService {
   public unreadMessages$ = new Subject<ChatMessage[]>();
   public unreadCount$ = new Subject<number>();
 
-  constructor(private http: HttpClient, private authState: AuthStateService) {}
+  private unreadCounts: { [key: string]: number } = {};
+  public unreadCounts$ = new BehaviorSubject<{ [key: string]: number }>({});
+
+  constructor(private http: HttpClient, private authState: AuthStateService) { }
 
   public startConnection(): void {
 
@@ -47,6 +50,7 @@ export class ChatService {
 
     this.hubConnection.on('ReceiveTeamMessage', (msg: ChatMessage) => {
       this.messageReceived$.next(msg);
+      this.handleNewMessage(msg);
     });
 
     this.hubConnection.on('ReceivePrivateMessage', (msg: ChatMessage) => {
@@ -56,22 +60,40 @@ export class ChatService {
   }
 
   private handleNewMessage(msg: ChatMessage) {
-     const selfId = this.authState.currentUser()?.userId;
-     if (msg.senderId !== selfId) {
-        this.unreadMessages.unshift(msg);
-        this.unreadMessages$.next(this.unreadMessages);
-        this.unreadCount$.next(this.unreadMessages.length);
-     }
+    const selfId = this.authState.currentUser()?.userId;
+    if (msg.senderId !== selfId) {
+      this.unreadMessages.unshift(msg);
+      this.unreadMessages$.next(this.unreadMessages);
+      this.unreadCount$.next(this.unreadMessages.length);
+
+      const key = msg.isPrivate ? `user_${msg.senderId}` : 'team';
+      this.unreadCounts[key] = (this.unreadCounts[key] || 0) + 1;
+      this.unreadCounts$.next({ ...this.unreadCounts });
+    }
   }
 
   public openChatPopup(userId?: number) {
     this.triggerPopup$.next(userId || null);
   }
 
+  public clearConversationUnread(key: string) {
+    this.unreadCounts[key] = 0;
+    this.unreadCounts$.next({ ...this.unreadCounts });
+
+    // Also remove from global unread messages if you wanted to sync them
+    this.unreadMessages = this.unreadMessages.filter(m => {
+      const mKey = m.isPrivate ? `user_${m.senderId}` : 'team';
+      return mKey !== key;
+    });
+    this.unreadMessages$.next(this.unreadMessages);
+    this.unreadCount$.next(this.unreadMessages.length);
+  }
+
   public clearUnread() {
     this.unreadMessages = [];
     this.unreadMessages$.next([]);
     this.unreadCount$.next(0);
+    // Note: We don't clear unreadCounts here so sidebar markers persist until clicked
   }
 
   public stopConnection(): void {

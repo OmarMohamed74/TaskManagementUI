@@ -44,13 +44,17 @@
     <p-divider />
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <strong>Due Date</strong><br />
         <span>{{ task.dueDate ? (task.dueDate | date: 'yyyy-MM-dd') : '-' }}</span>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <strong>Created At</strong><br />
         <span>{{ task.createdAt | date: 'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="col-4">
+        <strong>Created By</strong><br />
+        <span>{{ task.createdByName || '-' }}</span>
       </div>
     </div>
   </ng-container>

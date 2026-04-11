@@ -131,7 +131,7 @@ export class AdminTeamsComponent implements OnInit {
     this.teamService.assignMember({ teamId: this.selectedTeamId, userId: this.assignMemberForm.value.userId }).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          this.swal.success('Member assigned successfully', 'Team Management');
+          this.swal.success(res.message || 'Member assigned successfully', 'Team Management');
           this.assignMemberVisible = false;
           this.loadTeams();
         } else {
@@ -139,7 +139,7 @@ export class AdminTeamsComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.swal.error('An unexpected error occurred', 'Error');
+        this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
       }
     });
   }

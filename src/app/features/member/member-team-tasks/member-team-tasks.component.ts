@@ -107,7 +107,9 @@ export class MemberTeamTasksComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.userService.getNonPaginatedUsers().subscribe({
+    const teamId = this.authState.currentUser()?.teamId;
+    if (!teamId) return;
+    this.userService.getTeamMembers(teamId).subscribe({
       next: (res) => { this.users = res.data; }
     });
   }
@@ -117,14 +119,14 @@ export class MemberTeamTasksComponent implements OnInit {
     this.taskService.createTask({ ...dto, teamId }).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          this.swal.success('Task created successfully', 'Team Management');
+          this.swal.success(res.message, 'Team Management');
           if (teamId) this.loadTeamTasks(teamId);
         } else {
           this.swal.error(res.message || 'Failed to create task', 'Team Management');
         }
       },
       error: (err) => {
-        this.swal.error('An unexpected error occurred', 'Error');
+        this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
       }
     });
   }
@@ -155,7 +157,7 @@ export class MemberTeamTasksComponent implements OnInit {
         this.taskService.deleteTask(task.id).subscribe({
           next: (res) => {
             if (res.isSuccess) {
-              this.swal.success('Task deleted successfully', 'Team Management');
+              this.swal.success(res.message, 'Team Management');
               const teamId = this.authState.currentUser()?.teamId;
               if (teamId) this.loadTeamTasks(teamId);
             } else {
@@ -163,7 +165,7 @@ export class MemberTeamTasksComponent implements OnInit {
             }
           },
           error: (err) => {
-            this.swal.error('An unexpected error occurred', 'Error');
+            this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
           }
         });
       }

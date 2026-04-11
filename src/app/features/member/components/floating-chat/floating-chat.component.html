@@ -1,19 +1,38 @@
+<!-- New Message Preview -->
+@if(lastUnreadMessage && !visible){
+<div class="position-fixed bg-white border rounded shadow p-2"
+  style="bottom: 6rem; right: 2rem; max-width: 450px; z-index: 1050; cursor: pointer; transition: all 0.3s ease-in-out;"
+  (click)="toggleChat()">
+  <div class="d-flex align-items-center mb-1">
+    <span class="ms-auto badge" [class.bg-success]="lastUnreadMessage.isPrivate"
+      [class.bg-primary]="!lastUnreadMessage.isPrivate" style="font-size: 0.65rem;">
+      {{ lastUnreadMessage.isPrivate ? 'Private' : 'Team' }}
+    </span>
+    <strong class="text-truncate" style="font-size: 0.85rem;">{{ lastUnreadMessage.senderName }}</strong>
+
+  </div>
+  <p class="text-muted text-truncate mb-0" style="font-size: 0.8rem;">
+    {{ lastUnreadMessage.content }}
+  </p>
+</div>
+}
+
 <!-- Floating Button -->
 <button class="btn btn-success rounded-circle shadow position-fixed d-flex align-items-center justify-content-center"
-        style="bottom: 2rem; right: 2rem; width: 56px; height: 56px; z-index: 1050; border: none;"
-        (click)="toggleChat()">
+  style="bottom: 2rem; right: 2rem; width: 56px; height: 56px; z-index: 1050; border: none;" (click)="toggleChat()">
   <i class="pi pi-comments fs-4 text-white"></i>
-  <span *ngIf="unreadCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light">
+  @if(unreadCount > 0){
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light">
     {{ unreadCount }}
   </span>
+  }
 </button>
 
 <!-- Chat Dialog Pop-up -->
-<p-dialog [(visible)]="visible" [modal]="true" [maximizable]="true" 
-          [style]="{width: '80vw', height: '85vh'}" 
-          header="Chat" 
-          styleClass="p-0 overflow-hidden" 
-          contentStyleClass="p-0 h-100 overflow-hidden"
-          (onShow)="onDialogShow()">
-  <app-member-chat *ngIf="visible" #memberChat class="d-block h-100 w-100"></app-member-chat>
+<p-dialog [(visible)]="visible" [modal]="true" [maximizable]="true" [style]="{width: '80vw', height: '85vh'}"
+  header="Chat" styleClass="p-0 overflow-hidden" contentStyleClass="p-0 h-100 overflow-hidden"
+  (onShow)="onDialogShow()">
+  @if(visible){
+  <app-member-chat #memberChat class="d-block h-100 w-100"></app-member-chat>
+  }
 </p-dialog>

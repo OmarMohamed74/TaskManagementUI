@@ -15,6 +15,7 @@ import { MemberChatComponent } from '../../member-chat/member-chat.component';
 export class FloatingChatComponent implements OnInit, OnDestroy {
   visible = false;
   unreadCount = 0;
+  lastUnreadMessage: any = null;
   private sub!: Subscription;
 
   @ViewChild('memberChat') memberChat!: MemberChatComponent;
@@ -24,6 +25,7 @@ export class FloatingChatComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.chatService.triggerPopup$.subscribe((userId: number | null) => {
       this.visible = true;
+      this.lastUnreadMessage = null;
       if (userId) {
         //wait for dialog and component to initialize
         setTimeout(() => {
@@ -37,6 +39,10 @@ export class FloatingChatComponent implements OnInit, OnDestroy {
     this.chatService.unreadCount$.subscribe((count: number) => {
        this.unreadCount = count;
     });
+
+    this.chatService.unreadMessages$.subscribe((messages) => {
+      this.lastUnreadMessage = messages.length > 0 ? messages[0] : null;
+    });
   }
 
   ngOnDestroy() {
@@ -47,12 +53,14 @@ export class FloatingChatComponent implements OnInit, OnDestroy {
     this.visible = !this.visible;
     if (this.visible) {
        this.chatService.clearUnread();
+       this.lastUnreadMessage = null;
     }
   }
 
   onDialogShow() {
      if (this.visible) {
        this.chatService.clearUnread();
+       this.lastUnreadMessage = null;
      }
   }
 }

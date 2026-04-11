@@ -16,8 +16,9 @@
 
     <div class="mb-3">
       <label for="taskAssignee" class="form-label">Assign To</label>
-      <p-select inputId="taskAssignee" [filter]="true" optionLabel="label" filterBy="label" [options]="userOptions"
-        appendTo="body" formControlName="assigneeId" placeholder="Select user" [showClear]="true" styleClass="w-100" />
+      <p-select inputId="taskAssignee" [filter]="true" optionLabel="label" optionValue="value" filterBy="label"
+        [options]="userOptions" appendTo="body" formControlName="assigneeId" placeholder="Select user"
+        [showClear]="true" styleClass="w-100" />
     </div>
 
     <div class="mb-3">

@@ -41,6 +41,7 @@ export class MemberChatComponent implements OnInit {
   onlineUserIds: number[] = [];
   loading = false;
   chatSubscription!: Subscription;
+  unreadCounts: { [key: string]: number } = {};
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
   chatMode: 'team' | 'private' = 'team';
@@ -61,18 +62,23 @@ export class MemberChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatSubscription = this.chatService.messageReceived$.subscribe((msg: ChatMessage) => {
-      if (this.chatMode === 'team' && !msg.isPrivate) {
+      const isCurrentTeamChat = this.chatMode === 'team' && !msg.isPrivate;
+      const isCurrentPrivateChat = this.chatMode === 'private' && msg.isPrivate && 
+                                   (msg.senderId === this.selectedReceiverId || msg.receiverId === this.selectedReceiverId);
+
+      if (isCurrentTeamChat || isCurrentPrivateChat) {
         if (msg.senderId !== this.currentUserId) {
           this.messages = [...this.messages, msg];
-        }
-      } else if (this.chatMode === 'private' && msg.isPrivate) {
-        if (msg.senderId === this.selectedReceiverId || msg.receiverId === this.selectedReceiverId) {
-          if (msg.senderId !== this.currentUserId) {
-            this.messages = [...this.messages, msg];
-          }
+          this.scrollToBottom();
+          // Clear if active
+          const key = msg.isPrivate ? `user_${msg.senderId}` : 'team';
+          this.chatService.clearConversationUnread(key);
         }
       }
-      this.scrollToBottom();
+    });
+
+    this.chatService.unreadCounts$.subscribe(counts => {
+      this.unreadCounts = counts;
     });
 
     this.loadUsers();
@@ -139,12 +145,14 @@ export class MemberChatComponent implements OnInit {
 
   selectTeamChat(): void {
     this.chatMode = 'team';
+    this.chatService.clearConversationUnread('team');
     this.onModeChange();
   }
 
   selectUserChat(userId: number): void {
     this.chatMode = 'private';
     this.selectedReceiverId = userId;
+    this.chatService.clearConversationUnread(`user_${userId}`);
     this.messages = [];
     this.loadMessages();
   }
