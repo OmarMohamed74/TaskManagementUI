@@ -8,7 +8,7 @@
 
   <p-card>
     <p-table [value]="users" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true"
-      (onLazyLoad)="onPageChange($event)" [showCurrentPageReport]="true"
+      (onLazyLoad)="onPageChange($event)" [showCurrentPageReport]="true" [rowHover]="true" 
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users" [rowsPerPageOptions]="[5, 10, 20]"
       styleClass="p-datatable-striped p-datatable-sm" responsiveLayout="scroll">
       <ng-template pTemplate="header">

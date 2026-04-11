@@ -102,14 +102,14 @@ export class MemberTasksComponent implements OnInit {
     this.taskService.createTask(dto).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          this.swal.success('Task created successfully', 'Task Management');
+          this.swal.success(res.message, 'Task Management');
           this.loadMyTasks();
         } else {
           this.swal.error(res.message || 'Failed to create task', 'Task Management');
         }
       },
       error: (err) => {
-        this.swal.error('An unexpected error occurred', 'Error');
+        this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
       }
     });
   }
