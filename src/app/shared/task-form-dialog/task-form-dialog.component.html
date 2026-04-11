@@ -23,7 +23,8 @@
 
     <div class="mb-3">
       <label for="taskPriority" class="form-label">Priority</label>
-      <p-select inputId="taskPriority" [options]="priorityOptions" formControlName="priority" styleClass="w-100" />
+      <p-select inputId="taskPriority" [options]="priorityOptions" appendTo="body" formControlName="priority"
+        styleClass="w-100" />
     </div>
 
 

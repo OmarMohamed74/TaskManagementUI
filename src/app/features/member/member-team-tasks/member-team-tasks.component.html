@@ -4,44 +4,22 @@
 <div class="container-fluid p-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0"><i class="pi pi-users me-2"></i>Team Tasks</h2>
-    <p-button label="Create Task" icon="pi pi-plus" (onClick)="createVisible = true" />
+    <p-button label="Create Task" icon="pi pi-plus" (onClick)="canCreateTask()" />
   </div>
 
   <p-card>
-    <app-task-table
-      [tasks]="tasks"
-      [canEdit]="true"
-      [canDelete]="true"
-      [totalRecords]="totalRecords"
-      [rows]="pageSize"
-      (viewTask)="onViewTask($event)"
-      (editStatus)="onEditStatus($event)"
-      (editTask)="onEditTask($event)"
-      (deleteTask)="onDeleteTask($event)"
-      (pageChange)="onPageChange($event)"
-      (search)="onSearch($event)"
-    />
+    <app-task-table [tasks]="tasks" [canEdit]="true" [canDelete]="true" [totalRecords]="totalRecords" [rows]="pageSize"
+      (viewTask)="onViewTask($event)" (editStatus)="onEditStatus($event)" (editTask)="onEditTask($event)"
+      (deleteTask)="onDeleteTask($event)" (pageChange)="onPageChange($event)" (search)="onSearch($event)" />
   </p-card>
 </div>
 
-<app-task-form-dialog
-  [(visible)]="createVisible"
-  [users]="users"
-  (taskCreated)="onTaskCreated($event)"
-/>
+<app-task-form-dialog [(visible)]="createVisible" [users]="users" (taskCreated)="onTaskCreated($event)" />
 
-<app-task-edit-dialog [(visible)]="editVisible" [task]="selectedTask!" [users]="users"
-  (taskSaved)="refreshTasks()" />
+<app-task-edit-dialog [(visible)]="editVisible" [task]="selectedTask!" [users]="users" (taskSaved)="refreshTasks()" />
 
-<app-task-detail-dialog
-  [(visible)]="detailVisible"
-  [task]="selectedTask"
-/>
+<app-task-detail-dialog [(visible)]="detailVisible" [task]="selectedTask" />
 
-<app-task-status-dialog
-  [(visible)]="statusVisible"
-  [task]="selectedTask"
-  (statusUpdated)="onStatusUpdated()"
-/>
+<app-task-status-dialog [(visible)]="statusVisible" [task]="selectedTask" (statusUpdated)="onStatusUpdated()" />
 
 <app-floating-chat></app-floating-chat>

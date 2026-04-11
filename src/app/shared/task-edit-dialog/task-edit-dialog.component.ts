@@ -108,12 +108,15 @@ export class TaskEditDialogComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if (this.form.invalid || !this.task) return;
 
+    const selectedDate = new Date(this.form.value.dueDate);
+    const normalizedDate = new Date(Date.UTC(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()));
+
     const dto: UpdateTaskDto = {
       title: this.form.value.title,
       description: this.form.value.description,
       priority: this.form.value.priority,
       assigneeId: this.form.value.assigneeId,
-      dueDate: this.form.value.dueDate ? new Date(this.form.value.dueDate).toISOString() : new Date().toISOString()
+      dueDate: normalizedDate.toISOString()
     };
 
     this.taskService.updateTask(this.task.id, dto).subscribe({

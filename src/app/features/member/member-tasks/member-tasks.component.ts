@@ -97,6 +97,15 @@ export class MemberTasksComponent implements OnInit {
       next: (res) => { this.users = res.data; }
     });
   }
+  canCreateTask() {
+    const user = this.authState.currentUser();
+    if (user?.teamId) {
+      this.createVisible = true;
+    } else {
+      this.swal.error('You are not a member of any team', 'Team Management');
+      this.createVisible = false;
+    }
+  }
 
   onTaskCreated(dto: CreateTaskDto): void {
     this.taskService.createTask(dto).subscribe({

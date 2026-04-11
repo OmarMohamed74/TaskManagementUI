@@ -61,8 +61,12 @@ export class TaskFormDialogComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.invalid) return;
+    const selectedDate = new Date(this.form.value.dueDate);
+    const normalizedDate = new Date(Date.UTC(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()));
+
     const dto: CreateTaskDto = {
       ...this.form.value,
+      dueDate: normalizedDate.toISOString(),
       teamId: this.teamId
     };
     this.taskCreated.emit(dto);
