@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TaskItem, CreateTaskDto, UpdateTaskStatusDto, PagedResult, TaskQuery } from '../models/task.model';
+import { TaskItem, CreateTaskDto, UpdateTaskDto, UpdateTaskStatusDto, PagedResult, TaskQuery } from '../models/task.model';
 import { environment } from '../../../environments/environment';
 
 export interface ApiResponse<T> {
@@ -57,6 +57,10 @@ export class TaskService {
 
   updateStatus(id: number, dto: UpdateTaskStatusDto): Observable<ApiResponse<TaskItem>> {
     return this.http.put<ApiResponse<TaskItem>>(`${this.baseUrl}/${id}/status`, dto);
+  }
+
+  updateTask(id: number, dto: UpdateTaskDto): Observable<ApiResponse<TaskItem>> {
+    return this.http.put<ApiResponse<TaskItem>>(`${this.baseUrl}/${id}`, dto);
   }
 
   deleteTask(id: number): Observable<ApiResponse<void>> {

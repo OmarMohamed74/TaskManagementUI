@@ -16,6 +16,7 @@
       [rows]="pageSize"
       (viewTask)="onViewTask($event)"
       (editStatus)="onEditStatus($event)"
+      (editTask)="onEditTask($event)"
       (deleteTask)="onDeleteTask($event)"
       (pageChange)="onPageChange($event)"
       (search)="onSearch($event)"
@@ -29,6 +30,9 @@
   (taskCreated)="onTaskCreated($event)"
 />
 
+<app-task-edit-dialog [(visible)]="editVisible" [task]="selectedTask!" [users]="users"
+  (taskSaved)="refreshTasks()" />
+
 <app-task-detail-dialog
   [(visible)]="detailVisible"
   [task]="selectedTask"
@@ -37,7 +41,7 @@
 <app-task-status-dialog
   [(visible)]="statusVisible"
   [task]="selectedTask"
-  (statusUpdated)="onStatusUpdated($event)"
+  (statusUpdated)="onStatusUpdated()"
 />
 
 <app-floating-chat></app-floating-chat>

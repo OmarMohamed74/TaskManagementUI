@@ -16,10 +16,10 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th pSortableColumn="title">Title <p-sortIcon field="title" /></th>
-      <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
-      <th pSortableColumn="priority">Priority <p-sortIcon field="priority" /></th>
-      <th>AssigneeName</th>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Assignee</th>
       <th>Due Date</th>
       <th>Created By</th>
       <th>Actions</th>
@@ -42,8 +42,10 @@
         <div class="d-flex gap-2" (click)="$event.stopPropagation()">
           <p-button icon="pi pi-eye" [text]="true" pTooltip="View Details" (onClick)="viewTask.emit(task)" />
           @if (canEdit) {
-          <p-button icon="pi pi-pencil" [text]="true" severity="info" pTooltip="Update Status"
+          <p-button icon="pi pi-list-check" [text]="true" severity="info" pTooltip="Update Status"
             (onClick)="editStatus.emit(task)" />
+          <p-button icon="pi pi-pencil" [text]="true" severity="primary" pTooltip="Edit Task"
+            (onClick)="editTask.emit(task)" />
           }
           @if (canDelete) {
           <p-button icon="pi pi-trash" [text]="true" severity="danger" pTooltip="Delete"

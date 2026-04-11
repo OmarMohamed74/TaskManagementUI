@@ -1,0 +1,53 @@
+<p-dialog header="Edit Task" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+  [breakpoints]="{ '960px': '75vw', '641px': '90vw' }" (onHide)="close()">
+  <form [formGroup]="form" class="container-fluid mt-2">
+    <div class="row">
+      <!-- Title -->
+      <div class="col-12 mb-3">
+        <label for="editTaskTitle" class="form-label fw-bold">Title <span class="text-danger">*</span></label>
+        <input id="editTaskTitle" type="text" pInputText class="form-control" formControlName="title"
+          placeholder="Task title" />
+        @if(form.get('title')?.invalid && form.get('title')?.touched){
+        <small class="text-danger mt-1 d-block">Title is required</small>
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="col-12 mb-3">
+        <label for="editTaskDesc" class="form-label fw-bold">Description</label>
+        <textarea id="editTaskDesc" pTextarea class="form-control" rows="3" formControlName="description"
+          placeholder="Optional description"></textarea>
+      </div>
+
+      <!-- Assignee and Priority -->
+      <div class="col-md-12 mb-3">
+        <label for="editTaskAssignee" class="form-label fw-bold">Assignee</label>
+        <p-select inputId="editTaskAssignee" [filter]="true" optionLabel="label" optionValue="value" filterBy="label"
+          [options]="userOptions" appendTo="body" formControlName="assigneeId" placeholder="Select user"
+          [showClear]="true" styleClass="w-100" [loading]="isLoadingUsers" />
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label for="editTaskPriority" class="form-label fw-bold">Priority</label>
+        <p-select inputId="editTaskPriority" [options]="priorityOptions" optionLabel="label" optionValue="value"
+          formControlName="priority" styleClass="w-100" />
+      </div>
+
+      <!-- Due Date -->
+      <div class="col-md-12 mb-3">
+        <label for="editTaskDue" class="form-label fw-bold">Due Date</label>
+        <p-datepicker inputId="editTaskDue" formControlName="dueDate" [style]="{'width':'100%'}" appendTo="body"
+          dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-100" inputStyleClass="form-control"
+          [minDate]="minDate" />
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="d-flex justify-content-end gap-2 px-3 pb-2">
+      <p-button label="Close" severity="danger" icon="pi pi-lock" (onClick)="close()" />
+      <p-button severity="success" (onClick)="onSubmit()" label="Update Task" icon="pi pi-check"
+        [disabled]="form.invalid" />
+    </div>
+  </ng-template>
+</p-dialog>

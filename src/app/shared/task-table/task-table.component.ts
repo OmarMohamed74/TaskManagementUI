@@ -26,6 +26,7 @@ export class TaskTableComponent {
 
   @Output() viewTask = new EventEmitter<TaskItem>();
   @Output() editStatus = new EventEmitter<TaskItem>();
+  @Output() editTask = new EventEmitter<TaskItem>();
   @Output() deleteTask = new EventEmitter<TaskItem>();
   @Output() pageChange = new EventEmitter<any>();
   @Output() search = new EventEmitter<string>();

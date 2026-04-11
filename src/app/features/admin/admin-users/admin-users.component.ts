@@ -93,7 +93,7 @@ export class AdminUsersComponent implements OnInit {
     this.userService.createUser(this.createForm.value).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          this.swal.success('User created successfully', 'Management');
+          this.swal.success(res.message || 'User created successfully', 'Management');
           this.createVisible = false;
           this.loadUsers();
         } else {
@@ -101,7 +101,7 @@ export class AdminUsersComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.swal.error('An unexpected error occurred', 'Error');
+        this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
       }
     });
   }

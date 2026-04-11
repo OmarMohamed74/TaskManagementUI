@@ -2,7 +2,7 @@
   <form [formGroup]="form">
     <div class="mb-3">
       <label for="taskTitle" class="form-label">Title <span class="text-danger">*</span></label>
-      <input id="taskTitle" type="text" pInputText class="w-100" formControlName="title" placeholder="Task title" />
+      <input id="taskTitle" type="text" pInputText class="w-100" formControlName="title" placeholder="Title" />
       @if(form.get('title')?.invalid && form.get('title')?.touched){
       <small class="text-danger">Title is required</small>
       }
@@ -11,7 +11,7 @@
     <div class="mb-3">
       <label for="taskDesc" class="form-label">Description</label>
       <textarea id="taskDesc" pTextarea class="w-100" rows="3" formControlName="description"
-        placeholder="Optional description"></textarea>
+        placeholder="Description"></textarea>
     </div>
 
     <div class="mb-3">

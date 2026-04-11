@@ -11,10 +11,11 @@ import { TaskService } from '../../../core/services/task.service';
 import { UserService } from '../../../core/services/user.service';
 import { AuthStateService } from '../../../core/services/auth-state.service';
 import { Sweetalert } from '../../../core/services/Alerts/sweetalert';
-import { TaskItem, CreateTaskDto, UpdateTaskStatusDto } from '../../../core/models/task.model';
+import { TaskItem, CreateTaskDto, UpdateTaskDto } from '../../../core/models/task.model';
 import { User } from '../../../core/models/user.model';
 import { TaskTableComponent } from '../../../shared/task-table/task-table.component';
 import { TaskFormDialogComponent } from '../../../shared/task-form-dialog/task-form-dialog.component';
+import { TaskEditDialogComponent } from '../../../shared/task-edit-dialog/task-edit-dialog.component';
 import { TaskDetailDialogComponent } from '../../../shared/task-detail-dialog/task-detail-dialog.component';
 import { TaskStatusDialogComponent } from '../../../shared/task-status-dialog/task-status-dialog.component';
 
@@ -29,6 +30,7 @@ import { TaskStatusDialogComponent } from '../../../shared/task-status-dialog/ta
     ConfirmDialogModule,
     TaskTableComponent,
     TaskFormDialogComponent,
+    TaskEditDialogComponent,
     TaskDetailDialogComponent,
     TaskStatusDialogComponent,
     InputTextModule,
@@ -42,6 +44,7 @@ export class AdminTasksComponent implements OnInit {
   users: User[] = [];
   loading = false;
   createVisible = false;
+  editVisible = false;
   detailVisible = false;
   statusVisible = false;
   selectedTask: TaskItem | null = null;
@@ -57,7 +60,7 @@ export class AdminTasksComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private swal: Sweetalert
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -121,21 +124,18 @@ export class AdminTasksComponent implements OnInit {
     this.statusVisible = true;
   }
 
-  onStatusUpdated(dto: UpdateTaskStatusDto): void {
-    if (!this.selectedTask) return;
-    this.taskService.updateStatus(this.selectedTask.id, dto).subscribe({
-      next: (res) => {
-        if (res.isSuccess) {
-          this.messageService.add({ severity: 'success', summary: 'Status updated' });
-          this.loadTasks();
-        }
-      }
-    });
+  onEditTask(task: TaskItem): void {
+    this.selectedTask = task;
+    this.editVisible = true;
+  }
+
+  onStatusUpdated(): void {
+    this.loadTasks();
   }
 
   onDeleteTask(task: TaskItem): void {
     this.confirmationService.confirm({
-      message: `Delete task "${task.title}"?`,
+      message: `Are you sure you want to delete this task "${task.title}"?`,
       accept: () => {
         this.taskService.deleteTask(task.id).subscribe({
           next: (res) => {

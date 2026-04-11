@@ -5,6 +5,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { TaskItem, UpdateTaskStatusDto } from '../../core/models/task.model';
+import { TaskService } from '../../core/services/task.service';
+import { Sweetalert } from '../../core/services/Alerts/sweetalert';
 
 @Component({
   selector: 'app-task-status-dialog',
@@ -17,7 +19,7 @@ export class TaskStatusDialogComponent implements OnChanges {
   @Input() visible = false;
 
   @Output() visibleChange = new EventEmitter<boolean>();
-  @Output() statusUpdated = new EventEmitter<UpdateTaskStatusDto>();
+  @Output() statusUpdated = new EventEmitter<void>();
 
   form: FormGroup;
 
@@ -27,7 +29,9 @@ export class TaskStatusDialogComponent implements OnChanges {
     { label: 'Completed', value: 2 }
   ];
 
-  constructor(private fb: FormBuilder) {
+  loading = false;
+
+  constructor(private fb: FormBuilder, private taskService: TaskService, private swal: Sweetalert) {
     this.form = this.fb.group({ status: [0, Validators.required] });
   }
 
@@ -38,12 +42,30 @@ export class TaskStatusDialogComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) return;
-    this.statusUpdated.emit(this.form.value);
-    this.close();
+    if (this.form.invalid || !this.task) return;
+
+    this.loading = true;
+    const dto: UpdateTaskStatusDto = this.form.value;
+    this.taskService.updateStatus(this.task.id, dto).subscribe({
+      next: (res) => {
+        this.loading = false;
+        if (res.isSuccess) {
+          this.swal.success(res.message || 'Status updated successfully', 'Status Update');
+          this.statusUpdated.emit();
+          this.close();
+        } else {
+          this.swal.error(res.message || 'Failed to update status', 'Status Update');
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
+      }
+    });
   }
 
   close(): void {
     this.visibleChange.emit(false);
   }
 }
+

@@ -107,7 +107,7 @@ export class AdminTeamsComponent implements OnInit {
     this.teamService.createTeam(this.createTeamForm.value).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          this.swal.success('Team created successfully', 'Team Management');
+          this.swal.success(res.message || 'Team created successfully', 'Team Management');
           this.createTeamVisible = false;
           this.loadTeams();
         } else {
@@ -115,7 +115,7 @@ export class AdminTeamsComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.swal.error('An unexpected error occurred', 'Error');
+        this.swal.error(err?.error?.message || err.message || 'An unexpected error occurred', 'Error');
       }
     });
   }

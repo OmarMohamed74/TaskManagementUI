@@ -8,8 +8,8 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Close" severity="danger" type="button" (onClick)="close()" icon="pi pi-lock" />
-    <p-button (onClick)="onSubmit()" label="Update" severity="success" icon="pi pi-check" [disabled]="form.invalid" />
+    <p-button label="Close" severity="danger" type="button" (onClick)="close()" icon="pi pi-lock" [disabled]="loading" />
+    <p-button (onClick)="onSubmit()" label="Update" severity="success" [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-check'" [disabled]="form.invalid || loading" />
   </ng-template>
 
 </p-dialog>

@@ -7,7 +7,7 @@ export interface TaskItem {
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
-  assignedToId?: number;
+  assigneeId?: number;
   assignedToName?: string;
   createdById: number;
   createdByName?: string;
@@ -19,10 +19,18 @@ export interface TaskItem {
 export interface CreateTaskDto {
   title: string;
   description: string;
-  priority: number;
-  assignedToId?: number;
+  priority: TaskPriority;
+  assigneeId: number;
   teamId?: number;
-  dueDate?: string;
+  dueDate: string;
+}
+
+export interface UpdateTaskDto {
+  title: string;
+  description: string;
+  priority: TaskPriority;
+  assigneeId: number;
+  dueDate: string;
 }
 
 export interface UpdateTaskStatusDto {

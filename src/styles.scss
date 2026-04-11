@@ -57,3 +57,8 @@ body {
 .p-component {
   font-family: inherit;
 }
+
+// Ensure SweetAlert2 is always on top of PrimeNG dialogs
+.swal2-container {
+  z-index: 99999 !important;
+}

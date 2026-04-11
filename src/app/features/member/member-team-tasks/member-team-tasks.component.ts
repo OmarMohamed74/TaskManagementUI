@@ -9,10 +9,11 @@ import { TaskService } from '../../../core/services/task.service';
 import { UserService } from '../../../core/services/user.service';
 import { AuthStateService } from '../../../core/services/auth-state.service';
 import { Sweetalert } from '../../../core/services/Alerts/sweetalert';
-import { TaskItem, CreateTaskDto, UpdateTaskStatusDto } from '../../../core/models/task.model';
+import { TaskItem, CreateTaskDto, UpdateTaskDto } from '../../../core/models/task.model';
 import { User } from '../../../core/models/user.model';
 import { TaskTableComponent } from '../../../shared/task-table/task-table.component';
 import { TaskFormDialogComponent } from '../../../shared/task-form-dialog/task-form-dialog.component';
+import { TaskEditDialogComponent } from '../../../shared/task-edit-dialog/task-edit-dialog.component';
 import { TaskDetailDialogComponent } from '../../../shared/task-detail-dialog/task-detail-dialog.component';
 import { TaskStatusDialogComponent } from '../../../shared/task-status-dialog/task-status-dialog.component';
 import { FloatingChatComponent } from '../components/floating-chat/floating-chat.component';
@@ -28,6 +29,7 @@ import { FloatingChatComponent } from '../components/floating-chat/floating-chat
     ConfirmDialogModule,
     TaskTableComponent,
     TaskFormDialogComponent,
+    TaskEditDialogComponent,
     TaskDetailDialogComponent,
     TaskStatusDialogComponent,
     FloatingChatComponent
@@ -45,6 +47,7 @@ export class MemberTeamTasksComponent implements OnInit {
   searchTerm = '';
 
   createVisible = false;
+  editVisible = false;
   detailVisible = false;
   statusVisible = false;
   selectedTask: TaskItem | null = null;
@@ -77,6 +80,13 @@ export class MemberTeamTasksComponent implements OnInit {
       },
       error: () => { this.loading = false; }
     });
+  }
+
+  refreshTasks(): void {
+    const teamId = this.authState.currentUser()?.teamId;
+    if (teamId) {
+      this.loadTeamTasks(teamId, this.currentPage, this.pageSize);
+    }
   }
 
   onSearch(term: string): void {
@@ -129,27 +139,18 @@ export class MemberTeamTasksComponent implements OnInit {
     this.statusVisible = true;
   }
 
-  onStatusUpdated(dto: UpdateTaskStatusDto): void {
-    if (!this.selectedTask) return;
-    this.taskService.updateStatus(this.selectedTask.id, dto).subscribe({
-      next: (res) => {
-        if (res.isSuccess) {
-          this.swal.success('Status updated successfully', 'Team Management');
-          const teamId = this.authState.currentUser()?.teamId;
-          if (teamId) this.loadTeamTasks(teamId);
-        } else {
-          this.swal.error(res.message || 'Failed to update status', 'Team Management');
-        }
-      },
-      error: (err) => {
-        this.swal.error('An unexpected error occurred', 'Error');
-      }
-    });
+  onEditTask(task: TaskItem): void {
+    this.selectedTask = task;
+    this.editVisible = true;
+  }
+
+  onStatusUpdated(): void {
+    this.refreshTasks();
   }
 
   onDeleteTask(task: TaskItem): void {
     this.confirmationService.confirm({
-      message: `Delete task "${task.title}"?`,
+      message: `Are you sure you want to delete this task "${task.title}"?`,
       accept: () => {
         this.taskService.deleteTask(task.id).subscribe({
           next: (res) => {

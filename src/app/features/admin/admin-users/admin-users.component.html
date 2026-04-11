@@ -7,15 +7,15 @@
   </div>
 
   <p-card>
-    <p-table [value]="users" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords"
-      [lazy]="true" (onLazyLoad)="onPageChange($event)" [showCurrentPageReport]="true"
+    <p-table [value]="users" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true"
+      (onLazyLoad)="onPageChange($event)" [showCurrentPageReport]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users" [rowsPerPageOptions]="[5, 10, 20]"
       styleClass="p-datatable-striped p-datatable-sm" responsiveLayout="scroll">
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
-          <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
-          <th pSortableColumn="role">Role <p-sortIcon field="role" /></th>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Role</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
@@ -83,7 +83,7 @@
   <ng-template pTemplate="footer">
     <div class="d-flex justify-content-end gap-2">
       <p-button label="Close" severity="danger" icon="pi pi-lock" (onClick)="createVisible = false" />
-      <p-button (onClick)="submitCreate()" label="Create"  icon="pi pi-check" [disabled]="createForm.invalid" />
+      <p-button (onClick)="submitCreate()" label="Create" icon="pi pi-check" [disabled]="createForm.invalid" />
     </div>
   </ng-template>
 </p-dialog>
