@@ -42,7 +42,7 @@ export class MemberTeamTasksComponent implements OnInit {
   users: User[] = [];
   loading = false;
   totalRecords = 0;
-  pageSize = 10;
+  pageSize = 5;
   currentPage = 1;
   searchTerm = '';
 
