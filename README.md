@@ -1,6 +1,7 @@
 # Task Management System (Full-Stack)
 ## Quick Start 
 Once the application has started, log in with the Admin account using the **username** admin and **password** Admin@123. From there, you can begin creating users and managing tasks.
+- Project Hosting: http://tasksmanagement.runasp.net/login
 
 ## Description
 A full-stack Task Management application designed to streamline team operations and task assignments. Built with an **Angular** frontend and a **.NET 9 API** backend, it facilitates end-to-end task and team management, real-time live chat via SignalR, organized architectural design, and modern user-centric interfaces. 
